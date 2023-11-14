@@ -1,0 +1,1754 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Fair Work Commission Modern Awards Pay Database API",
+        "version": "1.0",
+        "description": "Open APIs for the Modern Awards Pay Database and its associated Exports",
+        "termsOfService": "https://developer.fwc.gov.au/terms-of-use",
+        "contact": {
+            "name": "Fair Work Commission Portal - Contact Us",
+            "url": "https://www.fwc.gov.au/about-us/contact-us"
+        }
+    },
+    "host": "api.fwc.gov.au",
+    "schemes": [
+        "https"
+    ],
+    "securityDefinitions": {
+        "apiKeyHeader": {
+            "type": "apiKey",
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header"
+        },
+        "apiKeyQuery": {
+            "type": "apiKey",
+            "name": "subscription-key",
+            "in": "query"
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ],
+    "paths": {
+        "/exampleEndpoint": {
+            "get": {
+                "summary": "Example endpoint to retrieve data",
+                "description": "An example GET request to demonstrate the response structure.",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_meta": {
+                                            "$ref": "#/components/schemas/PagedResultMetaModel"
+                                        },
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/AwardModel"
+                                                    }
+                                                ],
+                                                "xml": {
+                                                    "name": "result"
+                                                }
+                                            },
+                                            "nullable": true,
+                                            "xml": {
+                                                "name": "results",
+                                                "wrapped": true
+                                            }
+                                        },
+                                        "_links": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/Link"
+                                                    }
+                                                ],
+                                                "xml": {
+                                                    "name": "_link"
+                                                }
+                                            },
+                                            "nullable": true,
+                                            "xml": {
+                                                "name": "_links",
+                                                "wrapped": true
+                                            }
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                "examples": {
+                                    "exampleResponse": {
+                                        "value": {
+                                            "_meta": {
+                                                "current_page": 0,
+                                                "page_count": 0,
+                                                "limit": 0,
+                                                "result_count": 0,
+                                                "first_row_on_page": 0,
+                                                "last_row_on_page": 0,
+                                                "has_more_results": true,
+                                                "has_previous_results": true
+                                            },
+                                            "results": [
+                                                {
+                                                    "award_id": 0,
+                                                    "award_fixed_id": 0,
+                                                    "code": "string",
+                                                    "name": "string",
+                                                    "award_operative_from": "string",
+                                                    "award_operative_to": "string",
+                                                    "version_number": 0,
+                                                    "last_modified_datetime": "string",
+                                                    "published_year": 0
+                                                }
+                                            ],
+                                            "_links": [
+                                                {
+                                                    "href": "string",
+                                                    "rel": "string",
+                                                    "method": "string"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/awards": {
+            "get": {
+                "summary": "Retrieve awards",
+                "description": "Endpoint to retrieve awards with optional filtering and sorting.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "description": "The human-readable title of the award.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "description": "The page requested of the results retrieved.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "description": "The limit for the results per page.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "award_operative_from",
+                        "in": "query",
+                        "required": false,
+                        "description": "The date when the award came into operation.",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "award_operative_to",
+                        "in": "query",
+                        "required": false,
+                        "description": "The date when the award ceased to be in effect.",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "required": false,
+                        "description": "Sort criteria for the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ApiError": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/ApiErrorItem"
+                            }
+                        ],
+                        "xml": {
+                            "name": "error"
+                        }
+                    },
+                    "xml": {
+                        "name": "errors",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "ApiErrorItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "source": {
+                    "$ref": "#/definitions/ErrorSource"
+                }
+            },
+            "additionalProperties": false
+        },
+        "AwardClassificationModel": {
+            "type": "object",
+            "properties": {
+                "classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clauses": {
+                    "type": "string"
+                },
+                "clause_description": {
+                    "type": "string"
+                },
+                "parent_classification_name": {
+                    "type": "string"
+                },
+                "classification": {
+                    "type": "string"
+                },
+                "classification_level": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "next_down_classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "next_up_classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "AwardIdentificationModel": {
+            "type": "object",
+            "properties": {
+                "award_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "award_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "award_operative_from": {
+                    "type": "string"
+                },
+                "award_operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "AwardModel": {
+            "type": "object",
+            "properties": {
+                "award_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "award_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "award_operative_from": {
+                    "type": "string"
+                },
+                "award_operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "CreateSubscriptionRequestModel": {
+            "required": [
+                "callback_url",
+                "hook_on",
+                "http_verb"
+            ],
+            "type": "object",
+            "properties": {
+                "http_verb": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "callback_url": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "hook_on": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "entity_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "award_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "webhook_headers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/HeadersModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "webhook_header"
+                        }
+                    },
+                    "xml": {
+                        "name": "webhook_headers",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "example": {
+                "http_verb": "string",
+                "callback_url": "string",
+                "hook_on": "string",
+                "entity_fixed_id": 0,
+                "award_fixed_id": 0,
+                "webhook_headers": [
+                    {
+                        "name": "string",
+                        "value": "string"
+                    }
+                ]
+            }
+        },
+        "CreateWebhookSubscriptionResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/SingleItemMetaModel"
+                },
+                "result": {
+                    "$ref": "#/definitions/CreateWebhookSubscriptionResponseModel"
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "CreateWebhookSubscriptionResponseModel": {
+            "type": "object",
+            "properties": {
+                "callback_secret": {
+                    "format": "uuid",
+                    "type": "string"
+                },
+                "webhook_fixed_id": {
+                    "format": "uuid",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "ErrorSource": {
+            "type": "object",
+            "properties": {
+                "parameter": {
+                    "type": "string"
+                },
+                "pointer": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "ExpenseAllowanceModel": {
+            "type": "object",
+            "properties": {
+                "expense_allowance_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clauses": {
+                    "type": "string"
+                },
+                "parent_allowance": {
+                    "type": "string"
+                },
+                "allowance": {
+                    "type": "string"
+                },
+                "is_all_purpose": {
+                    "type": "boolean"
+                },
+                "allowance_amount": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "payment_frequency": {
+                    "type": "string"
+                },
+                "last_adjusted_year": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "cpi_quarter_last_adjusted": {
+                    "type": "string"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetAllWebhookSubscriptionsResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/SubscriptionsModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetAwardsByIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/AwardIdentificationModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetAwardsResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/AwardModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetClassificationsByAwardIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/AwardClassificationModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetExpenseAllowanceByAwardIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/ExpenseAllowanceModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualClassificationByIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/SingleItemMetaModel"
+                },
+                "result": {
+                    "$ref": "#/definitions/GetIndividualClassificationByIdResponseModel"
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualClassificationByIdResponseModel": {
+            "type": "object",
+            "properties": {
+                "classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clauses": {
+                    "type": "string"
+                },
+                "clause_description": {
+                    "type": "string"
+                },
+                "parent_classification_name": {
+                    "type": "string"
+                },
+                "classification": {
+                    "type": "string"
+                },
+                "classification_level": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "next_down_classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "next_up_classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualExpenseAllowanceByIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/SingleItemMetaModel"
+                },
+                "result": {
+                    "$ref": "#/definitions/GetIndividualExpenseAllowancesResponseModel"
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualExpenseAllowancesResponseModel": {
+            "type": "object",
+            "properties": {
+                "expense_allowance_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clauses": {
+                    "type": "string"
+                },
+                "parent_allowance": {
+                    "type": "string"
+                },
+                "allowance": {
+                    "type": "string"
+                },
+                "is_all_purpose": {
+                    "type": "boolean"
+                },
+                "allowance_amount": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "payment_frequency": {
+                    "type": "string"
+                },
+                "last_adjusted_year": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "cpi_quarter_last_adjusted": {
+                    "type": "string"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualPayRateByIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/GetIndividualPayRateByIdResponseModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualPayRateByIdResponseModel": {
+            "type": "object",
+            "properties": {
+                "classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "base_pay_rate_id": {
+                    "type": "string"
+                },
+                "base_rate_type": {
+                    "type": "string"
+                },
+                "base_rate": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "calculated_pay_rate_id": {
+                    "type": "string"
+                },
+                "calculated_rate_type": {
+                    "type": "string"
+                },
+                "calculated_rate": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "parent_classification_name": {
+                    "type": "string"
+                },
+                "classification": {
+                    "type": "string"
+                },
+                "classification_level": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "employee_rate_type_code": {
+                    "type": "string"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualWageAllowanceByAwardIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/SingleItemMetaModel"
+                },
+                "result": {
+                    "$ref": "#/definitions/GetIndividualWageAllowancesResponseModel"
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetIndividualWageAllowancesResponseModel": {
+            "type": "object",
+            "properties": {
+                "wage_allowance_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clauses": {
+                    "type": "string"
+                },
+                "parent_allowance": {
+                    "type": "string"
+                },
+                "allowance": {
+                    "type": "string"
+                },
+                "is_all_purpose": {
+                    "type": "boolean"
+                },
+                "rate": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "rate_unit": {
+                    "type": "string"
+                },
+                "base_pay_rate_id": {
+                    "type": "string"
+                },
+                "allowance_amount": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "payment_frequency": {
+                    "type": "string"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetPayRatesByAwardIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/PayRatesModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetPenaltiesByAwardIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/PenaltyModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetWageAllowancesByAwardIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/PagedResultMetaModel"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/WageAllowanceModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "result"
+                        }
+                    },
+                    "xml": {
+                        "name": "results",
+                        "wrapped": true
+                    }
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetWebhookSubscriptionByIdResponse": {
+            "type": "object",
+            "properties": {
+                "_meta": {
+                    "$ref": "#/definitions/SingleItemMetaModel"
+                },
+                "result": {
+                    "$ref": "#/definitions/GetWebhookSubscriptionByIdResponseModel"
+                },
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/Link"
+                            }
+                        ],
+                        "xml": {
+                            "name": "_link"
+                        }
+                    },
+                    "xml": {
+                        "name": "_links",
+                        "wrapped": true
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "GetWebhookSubscriptionByIdResponseModel": {
+            "required": [
+                "callback_url",
+                "hook_on",
+                "http_verb"
+            ],
+            "type": "object",
+            "properties": {
+                "http_verb": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "callback_url": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "hook_on": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "entity_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "award_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "webhook_headers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/HeadersModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "webhook_header"
+                        }
+                    },
+                    "xml": {
+                        "name": "webhook_headers",
+                        "wrapped": true
+                    }
+                },
+                "webhook_fixed_id": {
+                    "format": "uuid",
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "created_on": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "updated_on": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "HeadersModel": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Link": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "type": "string"
+                },
+                "rel": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "PagedResultMetaModel": {
+            "type": "object",
+            "properties": {
+                "current_page": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "page_count": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "limit": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "result_count": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "first_row_on_page": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "last_row_on_page": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "has_more_results": {
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "has_previous_results": {
+                    "type": "boolean",
+                    "readOnly": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "PayRatesModel": {
+            "type": "object",
+            "properties": {
+                "classification_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "base_pay_rate_id": {
+                    "type": "string"
+                },
+                "base_rate_type": {
+                    "type": "string"
+                },
+                "base_rate": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "calculated_pay_rate_id": {
+                    "type": "string"
+                },
+                "calculated_rate_type": {
+                    "type": "string"
+                },
+                "calculated_rate": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "parent_classification_name": {
+                    "type": "string"
+                },
+                "classification": {
+                    "type": "string"
+                },
+                "classification_level": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "employee_rate_type_code": {
+                    "type": "string"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "PenaltyModel": {
+            "type": "object",
+            "properties": {
+                "penalty_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_description": {
+                    "type": "string"
+                },
+                "classification_level": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "penalty_description": {
+                    "type": "string"
+                },
+                "rate": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "employee_rate_type_code": {
+                    "type": "string"
+                },
+                "penalty_calculated_value": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "calculated_includes_all_purpose": {
+                    "type": "boolean"
+                },
+                "base_pay_rate_id": {
+                    "type": "string"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "SingleItemMetaModel": {
+            "type": "object",
+            "additionalProperties": false
+        },
+        "SparseUpdateSubscriptionRequestModel": {
+            "type": "object",
+            "properties": {
+                "callback_url": {
+                    "type": "string"
+                },
+                "webhook_headers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/HeadersModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "webhook_header"
+                        }
+                    },
+                    "xml": {
+                        "name": "webhook_headers",
+                        "wrapped": true
+                    }
+                },
+                "is_active": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false,
+            "example": {
+                "callback_url": "string",
+                "webhook_headers": [
+                    {
+                        "name": "string",
+                        "value": "string"
+                    }
+                ],
+                "is_active": true
+            }
+        },
+        "SubscriptionsModel": {
+            "required": [
+                "callback_url",
+                "hook_on",
+                "http_verb"
+            ],
+            "type": "object",
+            "properties": {
+                "http_verb": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "callback_url": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "hook_on": {
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "entity_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "award_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "webhook_headers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/HeadersModel"
+                            }
+                        ],
+                        "xml": {
+                            "name": "webhook_header"
+                        }
+                    },
+                    "xml": {
+                        "name": "webhook_headers",
+                        "wrapped": true
+                    }
+                },
+                "webhook_fixed_id": {
+                    "format": "uuid",
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "created_on": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "updated_on": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "WageAllowanceModel": {
+            "type": "object",
+            "properties": {
+                "wage_allowance_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clause_fixed_id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "clauses": {
+                    "type": "string"
+                },
+                "parent_allowance": {
+                    "type": "string"
+                },
+                "allowance": {
+                    "type": "string"
+                },
+                "is_all_purpose": {
+                    "type": "boolean"
+                },
+                "rate": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "rate_unit": {
+                    "type": "string"
+                },
+                "base_pay_rate_id": {
+                    "type": "string"
+                },
+                "allowance_amount": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "payment_frequency": {
+                    "type": "string"
+                },
+                "operative_from": {
+                    "type": "string"
+                },
+                "operative_to": {
+                    "type": "string"
+                },
+                "version_number": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "last_modified_datetime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "published_year": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "tags": [],
+    "components": {
+        "schemas": {
+            "PagedResultMetaModel": {},
+            "AwardModel": {},
+            "Link": {}
+        }
+    }
+}
